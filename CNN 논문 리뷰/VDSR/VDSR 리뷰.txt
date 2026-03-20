@@ -1,0 +1,15 @@
+https://www.vlfeat.org/matconvnet/
+VDSR은 SRCNN이 초해상도 문제에 CNN을 성공적으로 도입했다는 점을 인정하면서도, receptive field가 작고 학습 수렴이 느리며 단일 스케일만 처리할 수 있다는 한계를 지적한다. 이를 해결하기 위해 VDSR은 VGG 스타일의 매우 깊은 20-layer CNN을 사용하고, residual learning과 adjustable gradient clipping을 통해 깊은 네트워크를 안정적으로 학습시킨다. 저자들은 이러한 구조가 더 넓은 문맥 정보를 활용하게 하여 초해상도 정확도를 크게 향상시킨다고 주장한다.
+residual learning :
+bicubic으로 확대된 입력과 정답 HR 이미지의 차이(residual)만 예측하여, 네트워크가 고주파 디테일 복원에 집중하도록 한다.
+adjustable gradient clipping :
+깊은 네트워크에 매우 큰 learning rate를 적용할 때 gradient 폭주를 방지하기 위해, 기울기 크기를 학습률에 맞춰 조절하며 제한한다.
+
+
+
+VDSR은 SRCNN의 얕은 구조가 가지는 작은 receptive field와 느린 학습 속도, 그리고 단일 스케일 전용이라는 한계를 지적한다. 이를 해결하기 위해 VDSR은 20개의 3×3 convolution layer를 사용하여 receptive field를 41×41까지 확장하고, residual learning을 통해 입력과 정답 사이의 차이만 학습하도록 설계하였다. 또한 adjustable gradient clipping을 통해 매우 높은 learning rate에서도 안정적인 학습을 가능하게 하였으며, 하나의 모델로 x2, x3, x4와 같은 multiple scale SR을 처리한다.
+
+
+VDSR은 bicubic 등으로 미리 확대된 저해상도 이미지(ILR)를 입력으로 받아, 고해상도 이미지 전체를 직접 예측하는 대신 입력 이미지와 정답 이미지의 차이값인 residual image를 예측한다. 이후 네트워크가 예측한 residual을 입력 이미지에 더하여 최종 고해상도 이미지를 복원한다. 이러한 residual learning 구조는 입력과 출력이 대부분 유사하다는 초해상도 문제의 특성을 반영한 것으로, 네트워크가 실제로 복원이 필요한 고주파 디테일에 집중하도록 하며 학습 수렴을 빠르게 만든다. 또한 VDSR은 20개의 convolution layer와 zero-padding을 사용하여 큰 receptive field를 확보하면서도 입력과 출력의 공간 크기를 동일하게 유지한다.
+저해상도 이미지를 bicubic interpolation으로 확대할 때, 전체적인 밝기나 큰 구조, 부드러운 영역처럼 공간적으로 완만하게 변하는 성분은 비교적 잘 유지된다. 반면 경계선, 텍스처, 세부 윤곽처럼 공간적으로 급격하게 변하는 고주파 성분은 보간 과정에서 흐려지거나 손실되기 쉽다. 따라서 초해상도 모델은 주로 이러한 고주파 디테일을 복원하는 역할을 수행한다.
+

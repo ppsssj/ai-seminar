@@ -1,0 +1,56 @@
+저화도와 고화도의 차이
+스케일 설명
+sisr에 대한 설명
+
+bicubic interpolation - 설명
+srcnn
+vdsr
+srresnet
+
+
+고화도 사진 다운그래이드의 문제점 언급(실제 저화도 사진의 효과를 낼 것인가..? 의문점)
+
+
+1. 고해상도(HR)와 저해상도(LR)의 차이
+픽셀 수 차이
+디테일/고주파 정보 손실
+확대 시 blur, aliasing, 계단 현상
+
+2. 스케일(scale)의 의미
+×2, ×3, ×4가 의미하는 것
+스케일이 커질수록 복원 난이도가 올라감
+
+3. SISR이란 무엇인가
+Single Image Super-Resolution
+한 장의 LR 이미지로 HR 이미지를 복원하는 문제
+영상 복원이 아니라 정보 복원/예측 문제라는 점 강조
+
+4. 전통적 방법: Bicubic Interpolation
+주변 픽셀을 이용해 부드럽게 확대
+장점: 빠르고 단순
+한계: 경계와 텍스처가 흐려짐, 새로운 디테일 생성 불가
+
+5. 왜 딥러닝 기반 SR이 필요한가
+bicubic은 “확대”는 가능하지만 “복원”은 약함
+여기서 SRCNN 등장 배경 연결
+
+6. SRCNN
+최초의 대표적 CNN 기반 SR
+흐름이 단순해서 발표용으로 좋음
+patch extraction → non-linear mapping → reconstruction
+
+7. VDSR
+더 깊은 네트워크
+residual learning 도입
+높은 학습률, 깊은 구조, multi-scale 대응 등 설명 가능
+
+8. SRResNet
+residual block 기반
+VDSR보다 더 현대적인 구조
+EDSR로 가기 전 단계 혹은 대체재로 충분히 적절
+
+9. 한계 및 문제 제기
+논문들은 주로 bicubic downsampling으로 LR 생성
+그런데 실제 저해상도 이미지는 blur, noise, sensor distortion, compression artifact 등이 섞임
+따라서 합성 LR과 실제 LR 사이에 domain gap이 존재할 수 있음
+“실험 조건에서 성능이 좋아도 실제 환경 일반화는 별개 문제”라고 정리
